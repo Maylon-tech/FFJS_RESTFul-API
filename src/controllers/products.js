@@ -35,7 +35,33 @@ async function post(req, res) {
 }
 
 
+async function put(req, res) {
+    const { id } = req.params   // Pelo parâmetro da URL
+
+        //   **** PRIMEIRA MANEIRA:   *****
+
+    // const product = await ProductsModel.findOne({ _id: id })  // poderia ser pelo método findById()
+    // Temum método - updateOne()  - para poder Atualizar..
+   //  await product.updateOne(req.body)
+    // res.send({
+      //  message: 'seccess', // manda uma mesagem junto
+      //  product,   // Busca os proudto pelo ID especifico no DB compass
+    // })
+
+        //   **** SEGUNDA MANEIRA:   *****
+
+    const product = await ProductsModel.findOneAndUpdate({ _id: id }, req.body, { new: true })
+                                // Prim valor _ método para procura o produto  --  Segundo valor - para alterar. -- Terc valor  -  Um Novo Valor
+    res.send({
+        message: 'success OK',
+        product,
+    })
+
+}
+
+
 module.exports = {
     get,
     post,
+    put,
 }
