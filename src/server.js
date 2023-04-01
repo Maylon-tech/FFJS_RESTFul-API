@@ -1,12 +1,34 @@
 const express = require('express')
 //const path = require('path')
 
+const cors = require('cors')
+
 const db = require('./database/db')
 const routes = require('./routes/routes')
 
 const app = express()
 app.use(express.json())
 db.connect()
+
+const allowedOrigins = [
+    'http://127.0.0.1:5500',
+    'http://www.app.com.br',
+]
+
+
+// Habilita CORs
+app.use(cors({
+    origin: function(origin, callback) {
+        let allowed = true
+
+        // Mobile app
+        if(!origin) allowed = true
+
+        if(!allowedOrigins.includes(origin))  // Verificando se esta na Lista ou Nao. Se nao tiver mudar para False.
+
+        callback(null, allowed)
+    }
+}))  // Com isso qualquer Libera fazer requisicao na API (Publicamente)
 
 // habilita o server para receber dados via POST (Formulario)
 app.use(express.urlencoded({ extended: true }))
